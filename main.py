@@ -46,7 +46,7 @@ def main():
 def drawMenu():
     width = 42
     lines = [
-        "Recipe Automation Program",
+        "Recipe Calculator",
         "",  # Empty line
         "1. Calculate recipe",
         "2. View existing recipes",
