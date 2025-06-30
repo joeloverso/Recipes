@@ -31,8 +31,7 @@ def main():
             console.print("[bold blue]Calculating recipe...[/bold blue]")
             input("Press Enter to continue...")
         elif choice == '2':
-            console.clear()
-            console.print("[bold blue]Viewing recipes...[/bold blue]")
+            view_recipes()
             input("Press Enter to continue...")
         elif choice == '3':
             new_recipe()
@@ -225,42 +224,99 @@ def display_recipe_preview(recipe_data):
     console.print(f"[bold cyan]Recipe Preview[/bold cyan]")
     console.print("="*60)
 
-    # Recipe name
-    console.print(f"\n[bold yellow]Name:[/bold yellow] {recipe_data['name']}")
+def view_recipes():
+    """View all existing recipes"""
+    console.clear()
+    console.print("[bold cyan]═══ View Existing Recipes ═══[/bold cyan]\n")
 
-    # Notes
-    if recipe_data['notes'].strip():
-        console.print(f"\n[bold yellow]Notes/Instructions:[/bold yellow]")
-        # Display notes in a panel for better formatting
-        notes_panel = Panel(recipe_data['notes'], border_style="dim")
-        console.print(notes_panel)
+    recipes_dir = "Saved Recipes"
 
-    # Ingredients table
-    if recipe_data['ingredients']:
-        console.print(f"\n[bold yellow]Ingredients:[/bold yellow]")
+    # Check if recipes directory exists
+    if not os.path.exists(recipes_dir):
+        console.print("[yellow]No recipes directory found. Create some recipes first![/yellow]")
+        return
 
-        table = Table(show_header=True, header_style="bold magenta")
-        table.add_column("Ingredient", style="cyan")
-        table.add_column("Quantity", style="green", justify="right")
-        table.add_column("Unit", style="yellow")
+    # Get all JSON files in the recipes directory
+    recipe_files = [f for f in os.listdir(recipes_dir) if f.endswith('.json')]
 
-        for ingredient in recipe_data['ingredients']:
-            # Format quantity to remove unnecessary decimal places
-            qty = ingredient['quantity']
-            if qty == int(qty):
-                qty_str = str(int(qty))
+    if not recipe_files:
+        console.print("[yellow]No recipes found. Create some recipes first![/yellow]")
+        return
+
+    # Sort recipes alphabetically
+    recipe_files.sort()
+
+    console.print(f"[green]Found {len(recipe_files)} recipe(s):[/green]\n")
+
+    # Create a table of available recipes
+    recipes_table = Table(show_header=True, header_style="bold magenta")
+    recipes_table.add_column("#", style="cyan", width=3)
+    recipes_table.add_column("Recipe Name", style="white")
+    recipes_table.add_column("Created", style="dim", width=12)
+
+    recipe_data_list = []
+
+    for i, filename in enumerate(recipe_files, 1):
+        filepath = os.path.join(recipes_dir, filename)
+        try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                recipe_data = json.load(f)
+
+            # Get recipe name and creation date
+            recipe_name = recipe_data.get('name', filename.replace('.json', ''))
+            created_date = recipe_data.get('created_date', 'Unknown')
+
+            # Format date for display
+            if created_date != 'Unknown':
+                try:
+                    date_obj = datetime.datetime.fromisoformat(created_date)
+                    formatted_date = date_obj.strftime('%Y-%m-%d')
+                except:
+                    formatted_date = 'Unknown'
             else:
-                qty_str = f"{qty:.2f}".rstrip('0').rstrip('.')
+                formatted_date = 'Unknown'
 
-            table.add_row(
-                ingredient['name'],
-                qty_str,
-                ingredient['unit']
-            )
+            recipes_table.add_row(str(i), recipe_name, formatted_date)
+            recipe_data_list.append((filename, recipe_data))
 
-        console.print(table)
+        except Exception as e:
+            console.print(f"[red]Error reading {filename}: {e}[/red]")
+            continue
 
-    console.print("="*60)
+    console.print(recipes_table)
+
+    # Let user select a recipe to view
+    while True:
+        try:
+            choice = Prompt.ask(
+                f"\n[bold yellow]Enter recipe number to view (1-{len(recipe_data_list)}) or 'b' to go back[/bold yellow]",
+                default="b"
+            ).strip().lower()
+
+            if choice == 'b':
+                return
+
+            choice_num = int(choice)
+            if 1 <= choice_num <= len(recipe_data_list):
+                filename, recipe_data = recipe_data_list[choice_num - 1]
+                display_full_recipe(recipe_data)
+
+                # Ask if they want to view another recipe
+                if not Confirm.ask("\n[cyan]View another recipe?[/cyan]"):
+                    return
+                else:
+                    # Redisplay the table
+                    console.clear()
+                    console.print("[bold cyan]═══ View Existing Recipes ═══[/bold cyan]\n")
+                    console.print(f"[green]Found {len(recipe_files)} recipe(s):[/green]\n")
+                    console.print(recipes_table)
+            else:
+                console.print(f"[red]Please enter a number between 1 and {len(recipe_data_list)}[/red]")
+
+        except ValueError:
+            console.print("[red]Please enter a valid number or 'q' to quit[/red]")
+        except KeyboardInterrupt:
+            return
 
 def display_full_recipe(recipe_data):
     """Display a complete recipe with all details"""
