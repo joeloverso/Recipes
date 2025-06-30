@@ -1,0 +1,22 @@
+{
+  "name": "miso soup",
+  "notes": "Add water to pot; put on medium heat\nAdd miso paste to pot and break it up with utensil\nAdd dashi to the pot\nNEVER let it reach a boil\nAdd tofu gently; use spoons or laddle\nAdd wakame\nAdd spring onion when soup is done and in bowl",
+  "ingredients": [
+    {
+      "name": "water",
+      "quantity": 1.0,
+      "unit": "cup(s)"
+    },
+    {
+      "name": "miso paste",
+      "quantity": 1.5,
+      "unit": "Tablespoon(s)"
+    },
+    {
+      "name": "hondashi",
+      "quantity": 0.5,
+      "unit": "teaspoon(s)"
+    }
+  ],
+  "created_date": "2025-06-30T00:25:53.542656"
+}

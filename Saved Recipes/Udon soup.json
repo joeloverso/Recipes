@@ -1,0 +1,22 @@
+{
+  "name": "Udon soup",
+  "notes": "Use frozen udon; It's the best!\nPut water in pot\nAdd Memmi to pot\nBoil udon for 2 minutes\nAdd beef to pot with udon\nGarnish with spring onion, bonito flakes, and sesame seeds",
+  "ingredients": [
+    {
+      "name": "pack of udon",
+      "quantity": 1.0,
+      "unit": "pack"
+    },
+    {
+      "name": "water",
+      "quantity": 1.5,
+      "unit": "cup(s)"
+    },
+    {
+      "name": "kekkoman memmi",
+      "quantity": 2.5,
+      "unit": "Tablespoons"
+    }
+  ],
+  "created_date": "2025-06-30T00:38:45.278772"
+}
