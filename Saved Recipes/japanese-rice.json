@@ -1,0 +1,27 @@
+{
+  "name": "japanese-rice",
+  "notes": "Wash rice 3-4 times\nFill up with water\nLet it sit for 30-60 minutes\nPut in salt and just a teensie bit of rice vinaegar\nCOOK\nAdd the rest of rice vinaegar and then sugar\nIMMEDIATELY take off heat\nGently fold rice with fork",
+  "ingredients": [
+    {
+      "name": "rice",
+      "quantity": 1.0,
+      "unit": "cups"
+    },
+    {
+      "name": "water",
+      "quantity": 1.2,
+      "unit": "cups"
+    },
+    {
+      "name": "rice vinegar",
+      "quantity": 1.0,
+      "unit": "Tablespoon(s)"
+    },
+    {
+      "name": "sugar",
+      "quantity": 2.0,
+      "unit": "teaspoon(s)"
+    }
+  ],
+  "created_date": "2025-06-29T23:11:33.122457"
+}
