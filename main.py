@@ -132,7 +132,12 @@ def new_recipe():
 
     # Get recipe name
     while True:
-        recipe_name = Prompt.ask("[bold cyan]Enter recipe name[/bold cyan]").strip()
+        recipe_name = (
+            Prompt.ask("[bold cyan]Enter recipe name[/bold cyan]")
+            .lower()
+            .strip()
+            .replace(" ", "-")
+        )
         if recipe_name:
             break
         console.print("[red]Recipe name cannot be empty. Please try again.[/red]")
@@ -331,8 +336,6 @@ def view_recipes():
     if len(all_recipes) > 5:
         search_choice = Prompt.ask(
             f"[cyan]Found {len(all_recipes)} recipes. Search by name? (y/n)[/cyan]",
-            choices=["y", "n", "Y", "N"],
-            default="n",
         ).lower()
 
         if search_choice == "y":
